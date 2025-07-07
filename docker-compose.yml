@@ -19,6 +19,6 @@ services:
   redis:
     image: redis:7.0-alpine
     container_name: moti.local.redis
-    command: /bin/sh -c "redis-server --requirepass teka"
+    command: /bin/sh -c "redis-server --requirepass moti"
     ports:
       - "6379:6379"
