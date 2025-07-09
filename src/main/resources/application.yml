@@ -17,12 +17,30 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
-  security:
-    oauth2:
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
+  cloud:
+    openfeign:
       client:
-        registration:
-          google:
-            client-id: ${GOOGLE_ID}
-            client-secret: ${GOOGLE_SECRET}
-            scope: profile, email
+        config:
+          default:
+            connectTimeout: 60000
+            readTimeout: 300000
+
+auth:
+  google:
+    base-url: ${GOOGLE_BASE_URL}
+    client-id: ${GOOGLE_CLIENT_ID}
+    client-secret: ${GOOGLE_CLIENT_SECRET}
+    redirect-uri: ${GOOGLE_REDIRECT_URI}
+
+jwt:
+  refresh-expiration-time: 1296000000 # 15일
+  access-expiration-time: 3600000 # 1시간
+  prefix: Bearer
+  secret-key: ${JWT_SECRET}
 
