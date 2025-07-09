@@ -4,6 +4,7 @@ import com.moti.domain.auth.controller.dto.response.TokenResponse;
 import com.moti.domain.auth.service.GoogleAuthService;
 import com.moti.shared.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +27,14 @@ public class AuthController {
         return ResponseEntity
                 .ok()
                 .body(CommonResponse.ok(googleAuthService.auth(code)));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<CommonResponse<TokenResponse>> refreshAccessToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String refreshToken) {
+        return ResponseEntity
+                .ok()
+                .body(CommonResponse.ok(
+                        googleAuthService.refresh(refreshToken)
+                ));
     }
 }
