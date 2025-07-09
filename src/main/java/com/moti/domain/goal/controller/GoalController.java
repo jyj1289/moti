@@ -46,6 +46,28 @@ public class GoalController {
                 ));
     }
 
+    @PatchMapping("/{id}/success")
+    public ResponseEntity<Void> success(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id
+    ) {
+        goalService.success(user, id);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+
+    @PatchMapping("/{id}/fail")
+    public ResponseEntity<Void> fail(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id
+    ) {
+        goalService.fail(user, id);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CommonResponse<GoalResponse>> getGoal(
             @AuthenticationPrincipal User user,

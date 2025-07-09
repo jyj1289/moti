@@ -28,6 +28,10 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private int point;
 
+    public void increasePoint(int point) {
+        this.point += point;
+    }
+
     public User(String name, String email, String picture) {
         this.name = name;
         this.email = email;

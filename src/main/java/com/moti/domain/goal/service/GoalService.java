@@ -4,11 +4,14 @@ import com.moti.domain.goal.controller.dto.request.CreateGoalRequest;
 import com.moti.domain.goal.controller.dto.response.GoalResponse;
 import com.moti.domain.goal.controller.dto.response.SimpleGoalResponse;
 import com.moti.domain.goal.domain.*;
+import com.moti.domain.goal.domain.exception.AlreadyFailedException;
+import com.moti.domain.goal.domain.exception.AlreadySuccessException;
 import com.moti.domain.goal.domain.exception.GoalNotFoundException;
 import com.moti.domain.goal.domain.type.Status;
 import com.moti.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,6 +56,31 @@ public class GoalService {
         Goal goal = goalRepository.findByIdAndUser(id, user)
                 .orElseThrow(GoalNotFoundException::new);
         return new GoalResponse(goal);
+    }
+
+    @Transactional
+    public void success(User user, Long id) {
+        Goal goal = goalRepository.findByIdAndUser(id, user)
+                .orElseThrow(GoalNotFoundException::new);
+        validate(goal);
+        goal.success();
+        user.increasePoint(1500);
+    }
+
+    @Transactional
+    public void fail(User user, Long id) {
+        Goal goal = goalRepository.findByIdAndUser(id, user)
+                .orElseThrow(GoalNotFoundException::new);
+        validate(goal);
+        goal.fail();
+    }
+
+    private void validate(Goal goal) {
+        if (goal.getStatus().equals(Status.SUCCESS)) {
+            throw new AlreadySuccessException();
+        } else if (goal.getStatus().equals(Status.FAILED)) {
+            throw new AlreadyFailedException();
+        }
     }
 
     private void generateConsumptionHabit(List<String> consumptionHabitList, Goal goal) {

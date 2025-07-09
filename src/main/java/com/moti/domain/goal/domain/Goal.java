@@ -53,6 +53,14 @@ public class Goal extends BaseTimeEntity {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
+    public void success() {
+        this.status = Status.SUCCESS;
+    }
+
+    public void fail() {
+        this.status = Status.FAILED;
+    }
+
     @Builder
     public Goal(String name, LocalDate endDate, String problem, String analysis, ConsumptionType consumptionType, User user) {
         this.name = name;
