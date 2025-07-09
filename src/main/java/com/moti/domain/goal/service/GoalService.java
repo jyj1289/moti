@@ -2,8 +2,10 @@ package com.moti.domain.goal.service;
 
 import com.moti.domain.goal.controller.dto.request.CreateGoalRequest;
 import com.moti.domain.goal.controller.dto.response.GoalResponse;
+import com.moti.domain.goal.controller.dto.response.SimpleGoalResponse;
 import com.moti.domain.goal.domain.*;
 import com.moti.domain.goal.domain.exception.GoalNotFoundException;
+import com.moti.domain.goal.domain.type.Status;
 import com.moti.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,19 @@ public class GoalService {
         genearteImprovementMethod(request.getImprovementMethods(), saved);
 
         return saved.getId();
+    }
+
+    public List<SimpleGoalResponse> getGoals(User user, List<Status> statusList) {
+        if (statusList == null) {
+            return goalRepository.findAllByUser(user).stream()
+                    .map(SimpleGoalResponse::new)
+                    .toList();
+        }
+
+        return goalRepository.findAllByUser(user).stream()
+                .filter(goal -> statusList.contains(goal.getStatus()))
+                .map(SimpleGoalResponse::new)
+                .toList();
     }
 
     public GoalResponse getGoal(User user, Long id) {

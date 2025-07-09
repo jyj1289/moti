@@ -2,6 +2,8 @@ package com.moti.domain.goal.controller;
 
 import com.moti.domain.goal.controller.dto.request.CreateGoalRequest;
 import com.moti.domain.goal.controller.dto.response.GoalResponse;
+import com.moti.domain.goal.controller.dto.response.SimpleGoalResponse;
+import com.moti.domain.goal.domain.type.Status;
 import com.moti.domain.goal.service.GoalService;
 import com.moti.domain.user.domain.User;
 import com.moti.shared.auth.AuthenticationPrincipal;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/goals")
@@ -29,6 +32,18 @@ public class GoalController {
         return ResponseEntity
                 .created(URI.create("/goals/" + id))
                 .build();
+    }
+
+    @GetMapping
+    public ResponseEntity<CommonResponse<List<SimpleGoalResponse>>> getGoals(
+            @AuthenticationPrincipal User user,
+            @RequestParam(name = "status", required = false) List<Status> statusList
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(CommonResponse.ok(
+                        goalService.getGoals(user, statusList)
+                ));
     }
 
     @GetMapping("/{id}")
