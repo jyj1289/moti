@@ -1,0 +1,30 @@
+package com.moti.domain.auth.controller;
+
+import com.moti.domain.auth.controller.dto.response.TokenResponse;
+import com.moti.domain.auth.service.GoogleAuthService;
+import com.moti.shared.response.CommonResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RequiredArgsConstructor
+@RequestMapping("/auth")
+@RestController
+public class AuthController {
+
+    private final GoogleAuthService googleAuthService;
+
+    @GetMapping("/google/link")
+    public ResponseEntity<CommonResponse<String>> getGoogleAuthUrl() {
+        return ResponseEntity
+                .ok()
+                .body(CommonResponse.ok(googleAuthService.getLink()));
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<CommonResponse<TokenResponse>> authWithGoogle(@RequestParam String code) {
+        return ResponseEntity
+                .ok()
+                .body(CommonResponse.ok(googleAuthService.auth(code)));
+    }
+}
