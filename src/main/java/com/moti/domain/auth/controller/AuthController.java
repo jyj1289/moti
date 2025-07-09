@@ -2,6 +2,8 @@ package com.moti.domain.auth.controller;
 
 import com.moti.domain.auth.controller.dto.response.TokenResponse;
 import com.moti.domain.auth.service.GoogleAuthService;
+import com.moti.domain.user.domain.User;
+import com.moti.shared.auth.AuthenticationPrincipal;
 import com.moti.shared.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -36,5 +38,13 @@ public class AuthController {
                 .body(CommonResponse.ok(
                         googleAuthService.refresh(refreshToken)
                 ));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal User user) {
+        googleAuthService.logout(user);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

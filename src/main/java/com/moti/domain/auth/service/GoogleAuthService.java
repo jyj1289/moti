@@ -76,6 +76,10 @@ public class GoogleAuthService {
                 .build();
     }
 
+    public void logout(User user) {
+        tokenRepository.deleteById(user.getEmail());
+    }
+
     private void validateRefreshToken(String expected, String actual) {
         if (!Objects.equals(expected, actual)) {
             throw new ExpiredTokenException();
