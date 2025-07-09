@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GoalResponse {
 
+    private final Long id;
     private final String name;
     private final LocalDate endDate;
     private final String problem;
@@ -25,6 +26,7 @@ public class GoalResponse {
     private final List<String> improvementMethodList;
 
     public GoalResponse(Goal goal) {
+        this.id = goal.getId();
         this.name = goal.getName();
         this.endDate = goal.getEndDate();
         this.problem = goal.getProblem();
