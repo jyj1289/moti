@@ -2,11 +2,11 @@ package com.moti.domain.quiz.service;
 
 import com.moti.domain.quiz.controller.dto.response.QuizResponse;
 import com.moti.domain.quiz.controller.dto.response.QuizSolvedResponse;
+import com.moti.domain.quiz.controller.dto.response.UserQuizAttemptResponse;
 import com.moti.domain.quiz.domain.Quiz;
 import com.moti.domain.quiz.domain.QuizRepository;
 import com.moti.domain.quiz.domain.UserQuizAttempt;
 import com.moti.domain.quiz.domain.UserQuizAttemptRepository;
-import com.moti.domain.quiz.domain.exception.AllQuizSolvedException;
 import com.moti.domain.quiz.domain.exception.AlreadyQuizSolvedException;
 import com.moti.domain.quiz.domain.exception.QuizNotFoundException;
 import com.moti.domain.user.domain.User;
@@ -18,7 +18,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
@@ -54,6 +53,12 @@ public class QuizService {
         attemptRepository.save(attempt);
 
         return new QuizSolvedResponse(isSolved, quiz.getCorrectAnswer());
+    }
+
+    public List<UserQuizAttemptResponse> getUserQuizAttempts(User user) {
+        return attemptRepository.findByUser(user).stream()
+                .map(UserQuizAttemptResponse::new)
+                .toList();
     }
 
     private void validate(User user) {
