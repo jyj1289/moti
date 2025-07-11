@@ -22,7 +22,7 @@ public class Quiz extends BaseTimeEntity {
     private String question;
 
     @Column(nullable = false)
-    private String answer;
+    private Long correctAnswer;
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
     private List<Answer> answerList;

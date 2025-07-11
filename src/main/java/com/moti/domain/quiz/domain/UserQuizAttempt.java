@@ -21,7 +21,10 @@ public class UserQuizAttempt extends BaseTimeEntity {
     private boolean isSolved;
 
     @Column(nullable = false)
-    private String answer;
+    private Long answer;
+
+    @Column(nullable = false)
+    private Long correctAnswer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name  = "user_id")
@@ -30,4 +33,12 @@ public class UserQuizAttempt extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "quiz_id")
     private Quiz quiz;
+
+    public UserQuizAttempt(boolean isSolved, Long answer, Long correctAnswer, User user, Quiz quiz) {
+        this.isSolved = isSolved;
+        this.answer = answer;
+        this.correctAnswer = correctAnswer;
+        this.user = user;
+        this.quiz = quiz;
+    }
 }
