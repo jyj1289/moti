@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface GoalRepository extends JpaRepository<Goal, Long> {
     Optional<Goal> findByIdAndUser(Long id, User user);
     List<Goal> findAllByUser(User user);
+    boolean existsByIdAndUser(Long id, User user);
 }

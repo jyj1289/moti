@@ -39,6 +39,11 @@ public class GoalService {
         return saved.getId();
     }
 
+    public void deleteGoal(User user, Long id) {
+        validate(user, id);
+        goalRepository.deleteById(id);
+    }
+
     public List<SimpleGoalResponse> getGoals(User user, List<Status> statusList) {
         if (statusList == null) {
             return goalRepository.findAllByUser(user).stream()
@@ -80,6 +85,12 @@ public class GoalService {
             throw new AlreadySuccessException();
         } else if (goal.getStatus().equals(Status.FAILED)) {
             throw new AlreadyFailedException();
+        }
+    }
+
+    private void validate(User user, Long id) {
+        if (!goalRepository.existsByIdAndUser(id, user)) {
+            throw new GoalNotFoundException();
         }
     }
 

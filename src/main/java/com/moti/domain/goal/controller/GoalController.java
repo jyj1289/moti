@@ -79,4 +79,15 @@ public class GoalController {
                         goalService.getGoal(user, id)
                 ));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGoal(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id
+    ) {
+        goalService.deleteGoal(user, id);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
 }
